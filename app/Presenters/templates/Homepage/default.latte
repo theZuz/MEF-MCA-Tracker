@@ -44,7 +44,7 @@
 			{var $remainingBudget = $employee->getBudget()}
 			<td n:foreach="$events as $event">
 				{if $event->hasEmployee($employee)}
-					{var $eventPricePerEmployee = $event->getPrice() / count($event->getEmployees())}
+					{var $eventPricePerEmployee = round($event->getPrice() / count($event->getEmployees()), 1)}
 					{$eventPricePerEmployee}
 					{var $remainingBudget -= $eventPricePerEmployee}
 				{/if}
