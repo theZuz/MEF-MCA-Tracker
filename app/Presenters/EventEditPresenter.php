@@ -72,7 +72,7 @@ final class EventEditPresenter extends Presenter
 				return $employee->getId();
 			}, $this->event->getEmployees()));
 
-		$form->addSubmit('submit', 'Edit');
+		$form->addSubmit('submit', 'Save');
 
 		$form->onSuccess[] = function (Form $form) {
 			$values = $form->getValues();

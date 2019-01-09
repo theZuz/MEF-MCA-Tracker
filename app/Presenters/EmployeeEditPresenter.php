@@ -74,7 +74,7 @@ final class EmployeeEditPresenter extends Presenter
 		$form->addDatePicker('startDate', 'Start date')
 			->setDefaultValue($this->employee->getStartDate())
 			->setNullable();
-		$form->addSubmit('submit', 'Edit');
+		$form->addSubmit('submit', 'Save');
 
 		$form->onSuccess[] = function (Form $form) {
 			$values = $form->getValues();
