@@ -3,6 +3,7 @@
 namespace App\Presenters;
 
 use App\Forms\FormFactory;
+use App\Model\Department;
 use App\Model\Employee;
 use App\Model\Event;
 use Doctrine\ORM\EntityManagerInterface;
@@ -63,6 +64,19 @@ final class EventEditPresenter extends Presenter
 		$form->addTextArea('description', 'Description')
 			->setDefaultValue($this->event->getDescription());
 
+		/** @var Department[] $departments */
+		$departments = $this->entityManager->getRepository(Department::class)->findBy([
+			'manager' => $this->getUser()->getId(),
+		]);
+		$departmentsOptions = [];
+		foreach ($departments as $department) {
+			$departmentsOptions[$department->getId()] = $department->getCode();
+		}
+		$form->addMultiSelect('departments', 'Departments', $departmentsOptions)
+			->setDefaultValue(array_map(function (Department $department) {
+				return $department->getId();
+			}, $this->event->getDepartments()));
+
 		$qb = $this->entityManager->createQueryBuilder();
 		$qb->select('e.id', 'e.name');
 		$qb->from(Employee::class, 'e');
@@ -83,7 +97,12 @@ final class EventEditPresenter extends Presenter
 			$this->event->setDate($values->date);
 			$this->event->setPrice((float)$values->price);
 			$this->event->setDescription($values->description);
-			$this->event->setEmployees(...$this->entityManager->getRepository(Employee::class)->findBy(['id' => $values->employees]));
+			$this->event->setDepartments(...$this->entityManager->getRepository(Department::class)->findBy([
+				'id' => $values->departments,
+			]));
+			$this->event->setEmployees(...$this->entityManager->getRepository(Employee::class)->findBy([
+				'id' => $values->employees
+			]));
 
 			$this->entityManager->flush();
 
