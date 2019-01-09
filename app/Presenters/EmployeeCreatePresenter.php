@@ -77,7 +77,7 @@ final class EmployeeCreatePresenter extends Presenter
 			$this->entityManager->flush();
 
 			$this->flashMessage('Employee successfully created', 'success');
-			$this->redirect('EmployeeList:');
+			$this->redirect('EmployeeList:', ['grid-filter[department]' => $values->department]);
 		};
 
 		return $form;

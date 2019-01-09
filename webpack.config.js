@@ -41,5 +41,12 @@ module.exports = {
 	plugins: [
 		new ExtractTextPlugin('index.css'),
 		new webpack.optimize.UglifyJsPlugin(),
+		new webpack.ProvidePlugin({
+			$: 'jquery',
+			jQuery: 'jquery',
+			'window.jQuery': 'jquery',
+			Nette: 'nette-forms',
+			'window.Nette': 'nette-forms',
+		}),
 	]
 };
