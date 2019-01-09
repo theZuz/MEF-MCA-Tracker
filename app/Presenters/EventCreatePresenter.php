@@ -74,6 +74,9 @@ final class EventCreatePresenter extends Presenter
 				(float)$values->price
 			);
 			$event->setDescription($values->description);
+			$event->setDepartments(...$this->entityManager->getRepository(Department::class)->findBy([
+				'id' => $values->departments,
+			]));
 			$event->setEmployees(...$this->entityManager->getRepository(Employee::class)->findBy([
 				'department' => $values->departments,
 			]));
@@ -82,7 +85,7 @@ final class EventCreatePresenter extends Presenter
 			$this->entityManager->flush();
 
 			$this->flashMessage('Event successfully created', 'success');
-			$this->redirect('EventEdit:', ['id' => $event->getId()]);
+			$this->redirect('EventList:');
 		};
 
 		return $form;

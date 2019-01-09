@@ -3,6 +3,7 @@
 namespace App\Presenters;
 
 use App\DataGrid\DataGridFactory;
+use App\Model\Department;
 use App\Model\Event;
 use Doctrine\ORM\EntityManagerInterface;
 use Nette\Application\UI\Presenter;
@@ -43,10 +44,28 @@ final class EventListPresenter extends Presenter
 		$qb = $this->entityManager->createQueryBuilder();
 		$qb->select('e');
 		$qb->from(Event::class, 'e');
+		$qb->leftJoin('e.departments', 'd');
 		$qb->where($qb->expr()->eq('e.manager', ':manager'));
 		$qb->setParameter('manager', $this->getUser()->getId());
 
 		$grid->setDataSource($qb);
+
+		$qb = $this->entityManager->createQueryBuilder();
+		$qb->select('d.id', 'd.code');
+		$qb->from(Department::class, 'd');
+		$qb->where($qb->expr()->eq('d.manager', ':manager'));
+		$qb->setParameter('manager', $this->getUser()->getId());
+		$grid->addColumnText('department', 'Department', 'd.id')
+			->setRenderer(function (Event $event) {
+				$result = [];
+				foreach ($event->getDepartments() as $department) {
+					$result[] = $department->getCode();
+				}
+
+				return implode(', ', $result);
+			})
+			->setFilterSelect(array_column($qb->getQuery()->getResult(), 'code', 'id'))
+			->setPrompt('');
 		$grid->addColumnText('name', 'Name')
 			->setFilterText();
 		$grid->addColumnDateTime('date', 'Date')

@@ -44,8 +44,14 @@ final class Event
 	private $price = 0.0;
 
 	/**
+	 * @ORM\ManyToMany(targetEntity=Department::class)
+	 * @var Department[]|Collection
+	 */
+	private $departments;
+
+	/**
 	 * @ORM\ManyToMany(targetEntity=Employee::class)
-	 * @var Collection
+	 * @var Employee[]|Collection
 	 */
 	private $employees;
 
@@ -65,6 +71,7 @@ final class Event
 		$this->name = $name;
 		$this->date = $date;
 		$this->price = $price;
+		$this->departments = new ArrayCollection;
 		$this->employees = new ArrayCollection;
 	}
 
@@ -116,6 +123,38 @@ final class Event
 	public function setDescription(string $description): void
 	{
 		$this->description = $description;
+	}
+
+	public function addDepartment(Department $department): void
+	{
+		if (!$this->departments->contains($department)) {
+			$this->departments->add($department);
+		}
+	}
+
+	public function removeDepartment(Department $department): void
+	{
+		$this->departments->removeElement($department);
+	}
+
+	public function setDepartments(Department ...$departments): void
+	{
+		foreach ($departments as $department) {
+			$this->addDepartment($department);
+		}
+		foreach ($this->departments as $department) {
+			if (!in_array($department, $departments, true)) {
+				$this->removeDepartment($department);
+			}
+		}
+	}
+
+	/**
+	 * @return Department[]
+	 */
+	public function getDepartments(): array
+	{
+		return $this->departments->toArray();
 	}
 
 	public function addEmployee(Employee $employee): void
