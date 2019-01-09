@@ -3,60 +3,79 @@
 {control filterForm}
 <table class="table">
 	<thead>
-		<tr>
-			<td>
-				CNUM
-			</td>
-			<td>
-				Name
-			</td>
-			<td>
-				Country
-			</td>
-			<td>
-				Department
-			</td>
-			<td n:foreach="$events as $event">
-				{$event->getName()}
-			</td>
-			<th>
-				Budget $
-			</th>
-			<th>
-				Remaining $
-			</th>
-		</tr>
+	<tr>
+		<td>
+			CNUM
+		</td>
+		<td>
+			Name
+		</td>
+		<td>
+			Country
+		</td>
+		<td>
+			Department
+		</td>
+		<td n:foreach="$events as $event">
+			{$event->getName()}
+		</td>
+		<th>
+			Budget $
+		</th>
+		<th>
+			Remaining $
+		</th>
+	</tr>
 	</thead>
 	<tbody>
-		<tr n:foreach="$employees as $employee">
-			<td>
-				{$employee->getCnum()}
-			</td>
-			<td>
-				{$employee->getName()}
-			</td>
-			<td>
-				{$employee->getCountry()}
-			</td>
-			<td>
-				{$employee->getDepartment()->getCode()}
-			</td>
-			{var $remainingBudget = $employee->getBudget()}
-			<td n:foreach="$events as $event">
-				{if $event->hasEmployee($employee)}
-					{var $eventPricePerEmployee = round($event->getPrice() / count($event->getEmployees()), 1)}
-					{$eventPricePerEmployee}
-					{var $remainingBudget -= $eventPricePerEmployee}
-				{/if}
-			</td>
-			<th>
-				{$employee->getBudget()}
-			</th>
-			<th>
-				{$remainingBudget}
-			</th>
-		</tr>
+	{var $totalBudget = 0.0}
+	{var $totalRemainingBudget = 0.0}
+	<tr n:foreach="$employees as $employee">
+		<td>
+			{$employee->getCnum()}
+		</td>
+		<td>
+			{$employee->getName()}
+		</td>
+		<td>
+			{$employee->getCountry()}
+		</td>
+		<td>
+			{$employee->getDepartment()->getCode()}
+		</td>
+		{var $remainingBudget = $employee->getBudget()}
+		<td n:foreach="$events as $event">
+			{if $event->hasEmployee($employee)}
+				{var $eventPricePerEmployee = round($event->getPrice() / count($event->getEmployees()), 1)}
+				{$eventPricePerEmployee}
+				{var $remainingBudget -= $eventPricePerEmployee}
+			{/if}
+		</td>
+		<th>
+			{var $budget = $employee->getBudget()}
+			{$budget}
+			{var $totalBudget += $budget}
+		</th>
+		<th>
+			{$remainingBudget}
+			{var $totalRemainingBudget += $remainingBudget}
+		</th>
+	</tr>
 	</tbody>
+	<tfoot>
+	<tr>
+		<th colspan="4">Total</th>
+		<th n:foreach="$events as $event">
+			{$event->getPrice()}
+		</th>
+		<th>
+			{$totalBudget}
+		</th>
+		<th>
+			{$totalRemainingBudget}
+		</th>
+	</tr>
+	</tfoot>
 </table>
 
 <h1>MCA tracker</h1>
