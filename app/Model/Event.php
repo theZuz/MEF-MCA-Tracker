@@ -49,6 +49,12 @@ final class Event
 	 */
 	private $employees;
 
+	/**
+	 * @ORM\Column(type="string")
+	 * @var string
+	 */
+	private $description = '';
+
 	public function __construct(
 		Manager $manager,
 		string $name,
@@ -100,6 +106,16 @@ final class Event
 	public function setPrice(float $price): void
 	{
 		$this->price = $price;
+	}
+
+	public function getDescription(): string
+	{
+		return $this->description;
+	}
+
+	public function setDescription(string $description): void
+	{
+		$this->description = $description;
 	}
 
 	public function addEmployee(Employee $employee): void

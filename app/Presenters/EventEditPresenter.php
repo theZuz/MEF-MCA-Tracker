@@ -60,6 +60,8 @@ final class EventEditPresenter extends Presenter
 			->setType('number')
 			->setDefaultValue($this->event->getPrice())
 			->setRequired();
+		$form->addTextArea('description', 'Description')
+			->setDefaultValue($this->event->getDescription());
 
 		$qb = $this->entityManager->createQueryBuilder();
 		$qb->select('e.id', 'e.name');
@@ -80,6 +82,7 @@ final class EventEditPresenter extends Presenter
 			$this->event->setName($values->name);
 			$this->event->setDate($values->date);
 			$this->event->setPrice((float)$values->price);
+			$this->event->setDescription($values->description);
 			$this->event->setEmployees(...$this->entityManager->getRepository(Employee::class)->findBy(['id' => $values->employees]));
 
 			$this->entityManager->flush();

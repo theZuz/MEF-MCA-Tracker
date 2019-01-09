@@ -1,36 +1,45 @@
 {block content}
+<h1>MEF tracker</h1>
 {control filterForm}
 <table class="table">
 	<thead>
 		<tr>
-			<th>
+			<td>
 				CNUM
-			</th>
-			<th>
+			</td>
+			<td>
 				Name
-			</th>
-			<th>
+			</td>
+			<td>
 				Country
-			</th>
-			<th>
+			</td>
+			<td>
 				Department
+			</td>
+			<th>
+				Budget $
 			</th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr n:foreach="$employees as $employee">
-			<th>
+			<td>
 				{$employee->getCnum()}
-			</th>
-			<th>
+			</td>
+			<td>
 				{$employee->getName()}
-			</th>
-			<th>
+			</td>
+			<td>
 				{$employee->getCountry()}
-			</th>
-			<th>
+			</td>
+			<td>
 				{$employee->getDepartment()->getCode()}
+			</td>
+			<th>
+				{$employee->getBudget()}
 			</th>
 		</tr>
 	</tbody>
 </table>
+
+<h1>MCA tracker</h1>

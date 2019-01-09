@@ -51,6 +51,7 @@ final class EventCreatePresenter extends Presenter
 		$form->addText('price', 'Price $')
 			->setType('number')
 			->setRequired();
+		$form->addTextArea('description', 'Description');
 
 		/** @var Department[] $departments */
 		$departments = $this->entityManager->getRepository(Department::class)->findBy([
@@ -72,6 +73,7 @@ final class EventCreatePresenter extends Presenter
 				$values->date,
 				(float)$values->price
 			);
+			$event->setDescription($values->description);
 			$event->setEmployees(...$this->entityManager->getRepository(Employee::class)->findBy([
 				'department' => $values->departments,
 			]));

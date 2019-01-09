@@ -53,6 +53,8 @@ final class EventListPresenter extends Presenter
 			->setFilterText();
 		$grid->addColumnNumber('price', 'Price $')
 			->setFilterText();
+		$grid->addColumnText('description', 'Description')
+			->setFilterText();
 		$grid->addAction('edit', 'Edit', 'EventEdit:');
 		$grid->addAction('remove', 'Remove', 'EventRemove:')
 			->setClass('btn btn-danger');

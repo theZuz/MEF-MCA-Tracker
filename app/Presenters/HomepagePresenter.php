@@ -47,6 +47,7 @@ final class HomepagePresenter extends Presenter
 		$qb->setParameter('manager', $this->getUser()->getId());
 
 		$this->template->employees = $qb->getQuery()->getResult();
+		$this->template->events = [];
 	}
 
 	protected function createComponentFilterForm(): Form
