@@ -16,8 +16,14 @@
 			<td>
 				Department
 			</td>
+			<td n:foreach="$events as $event">
+				{$event->getName()}
+			</td>
 			<th>
 				Budget $
+			</th>
+			<th>
+				Remaining $
 			</th>
 		</tr>
 	</thead>
@@ -35,8 +41,19 @@
 			<td>
 				{$employee->getDepartment()->getCode()}
 			</td>
+			{var $remainingBudget = $employee->getBudget()}
+			<td n:foreach="$events as $event">
+				{if $event->hasEmployee($employee)}
+					{var $eventPricePerEmployee = $event->getPrice() / count($event->getEmployees())}
+					{$eventPricePerEmployee}
+					{var $remainingBudget -= $eventPricePerEmployee}
+				{/if}
+			</td>
 			<th>
 				{$employee->getBudget()}
+			</th>
+			<th>
+				{$remainingBudget}
 			</th>
 		</tr>
 	</tbody>

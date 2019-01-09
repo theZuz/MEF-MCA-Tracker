@@ -142,6 +142,11 @@ final class Event
 		}
 	}
 
+	public function hasEmployee(Employee $employee): bool
+	{
+		return $this->employees->contains($employee);
+	}
+
 	/**
 	 * @return Employee[]
 	 */
