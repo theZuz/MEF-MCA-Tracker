@@ -1,0 +1,55 @@
+version: '3.4'
+
+services:
+  application: &application
+    build: &application-build
+      context: .
+      dockerfile: ./docker/application/Dockerfile
+      target: development
+    volumes:
+      - ./app:/var/www/html/app:cached
+      - ./www:/var/www/html/www:cached
+      - ./vendor:/var/www/html/vendor:cached
+      - ./composer.json:/var/www/html/composer.json
+      - ./composer.lock:/var/www/html/composer.lock
+      - ./phinx.php:/var/www/html/phinx.php
+    env_file:
+      - ./app/config/.env
+    environment: &application-environment
+      DEBUG_MODE: 1
+
+  application-debug:
+    <<: *application
+    build:
+      <<: *application-build
+#      target: debug
+      target: development
+    environment:
+      <<: *application-environment
+      PHP_IDE_CONFIG: serverName=aktin.cz.test
+      XDEBUG_CONFIG: "remote_enable=1 remote_host=host.docker.internal"
+
+  nginx-proxy:
+    build:
+      target: debug
+    environment:
+      VIRTUAL_HOST: meft.ibm.com.test
+    volumes:
+      - ./www:/var/www/html/www:cached
+
+  webpack:
+    build:
+      context: .
+      dockerfile: ./docker/webpack/Dockerfile
+    volumes:
+      - ./assets:/var/www/html/assets:cached
+      - ./www/assets:/var/www/html/www/assets:cached
+      - ./node_modules:/var/www/html/node_modules:cached
+      - ./package.json:/var/www/html/package.json
+      - ./package-lock.json:/var/www/html/package-lock.json
+      - ./webpack.config.js:/var/www/html/webpack.config.js
+
+networks:
+  default:
+    external:
+      name: nginx-proxy

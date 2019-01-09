@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+
+SOURCE=$1
+
+touch $SOURCE
+while true; do
+	if [ -s "$SOURCE" ]; then
+		head -n 1 $SOURCE
+		sed -i -e '1d' $SOURCE
+	else
+		sleep 1
+	fi
+done

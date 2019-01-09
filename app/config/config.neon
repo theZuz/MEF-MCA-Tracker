@@ -1,0 +1,34 @@
+application:
+	scanDirs: false
+	mapping:
+		*: App\*Module\Presenters\*Presenter
+
+routing:
+	routes:
+		'[[<module>/]<presenter>]':
+			presenter: Homepage
+			action: default
+
+http:
+	proxy: ::array_filter([::getenv('REMOTE_ADDR')])
+
+services:
+	- App\Forms\FormFactory
+	- App\DataGrid\DataGridFactory
+
+extensions:
+    dbal: Nettrine\DBAL\DI\DbalExtension
+    orm: Nettrine\ORM\DI\OrmExtension
+    orm.annotations: Nettrine\ORM\DI\OrmAnnotationsExtension
+    nextras.form: Nextras\Forms\Bridges\NetteDI\FormsExtension
+
+dbal:
+    connection:
+        host: mysql
+        user: root
+        password:
+        dbname: meft
+
+orm.annotations:
+	paths:
+		- app/Model

@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+set -e
+
+date #first line used for fingerprint https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/AgentReference.html
+
+if [ -f ${HTML_ROOT}/deploy/leader ]; then
+	${HTML_ROOT}/vendor/bin/phinx migrate
+	rm -f ${HTML_ROOT}/deploy/leader
+fi
+
+log-run /tmp/error.log >> /dev/stderr &
+
+exec php-fpm

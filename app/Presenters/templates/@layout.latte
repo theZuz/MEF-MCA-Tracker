@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>
+		MEF & MCA Tracker
+	</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="/assets/index.css">
+</head>
+
+<body>
+
+
+<nav class="navbar navbar-expand navbar-dark bg-dark mb-5">
+	<div class="container">
+		<a class="navbar-brand" n:href="Homepage:">MEF & MCA Tracker</a>
+		<ul class="navbar-nav mr-auto" n:if="$user->isLoggedIn()">
+			<li>
+				<a n:href="DepartmentList:" class="nav-link">
+					Departments
+				</a>
+			</li>
+			<li>
+				<a n:href="EmployeeList:" class="nav-link">
+					Employees
+				</a>
+			</li>
+			<li>
+				<a n:href="EventList:" class="nav-link">
+					Events
+				</a>
+			</li>
+		</ul>
+		<ul class="navbar-nav px-3"
+		">
+		<li class="nav-item text-nowrap">
+			{if $user->isLoggedIn()}
+				<a class="nav-link" n:href="SignOut:">Sign out</a>
+			{elseif !$presenter->isLinkCurrent('SignUp:')}
+				<a class="nav-link" n:href="SignUp:">Sign up</a>
+			{else}
+				<a class="nav-link" n:href="SignIn:">Sign in</a>
+			{/if}
+		</li>
+		</ul>
+	</div>
+</nav>
+
+<div class="container">
+	<p class="alert alert-{$flash->type}" n:foreach="$flashes as $flash">
+		{$flash->message}
+	</p>
+	{include content}
+</div>
+
+<script src="/assets/index.js"></script>
+</body>
+</html>
