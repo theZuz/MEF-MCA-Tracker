@@ -4,6 +4,7 @@ namespace App\Presenters;
 
 use App\Forms\FormFactory;
 use App\Model\Department;
+use App\Model\Employee;
 use Doctrine\ORM\EntityManagerInterface;
 use Nette\Application\UI\Form;
 use Nette\Application\UI\Presenter;
@@ -36,8 +37,16 @@ final class HomepagePresenter extends Presenter
 		}
 	}
 
-	public function renderDefault(): void {
-		//$this->template->employees = $this->entityManager->getRepository()
+	public function renderDefault(): void
+	{
+		$qb = $this->entityManager->createQueryBuilder();
+		$qb->select('e');
+		$qb->from(Employee::class, 'e');
+		$qb->join('e.department', 'd');
+		$qb->where($qb->expr()->eq('d.manager', ':manager'));
+		$qb->setParameter('manager', $this->getUser()->getId());
+
+		$this->template->employees = $qb->getQuery()->getResult();
 	}
 
 	protected function createComponentFilterForm(): Form
