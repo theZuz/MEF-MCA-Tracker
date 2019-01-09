@@ -48,6 +48,15 @@ final class DepartmentListPresenter extends Presenter
 
 		$grid->setDataSource($qb);
 		$grid->addColumnLink('code', 'Code', 'EmployeeList:', null, ['grid-filter[department]' => 'id']);
+		$grid->addColumnText('budget', 'Budget $')
+			->setRenderer(function (Department $department) {
+				$budget = 0.0;
+				foreach ($department->getEmployees() as $employee) {
+					$budget += $employee->getBudget();
+				}
+
+				return $budget;
+			});
 		$grid->addAction('remove', 'Remove', 'DepartmentRemove:')
 			->setClass('btn btn-danger');
 
