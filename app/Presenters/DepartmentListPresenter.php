@@ -47,7 +47,7 @@ final class DepartmentListPresenter extends Presenter
 		$qb->setParameter('manager', $this->getUser()->getId());
 
 		$grid->setDataSource($qb);
-		$grid->addColumnText('code', 'Code');
+		$grid->addColumnLink('code', 'Code', 'EmployeeList:', null, ['grid-filter[department]' => 'id']);
 		$grid->addAction('remove', 'Remove', 'DepartmentRemove:')
 			->setClass('btn btn-danger');
 
