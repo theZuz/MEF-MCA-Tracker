@@ -74,6 +74,7 @@ final class EmployeeListPresenter extends Presenter
 			->setSortable()
 			->setFilterDateRange();
 		$grid->addColumnNumber('budget', 'Budget $');
+		$grid->addAction('edit', 'Edit', 'EmployeeEdit:');
 		$grid->addAction('remove', 'Remove', 'EmployeeRemove:')
 			->setClass('btn btn-danger');
 

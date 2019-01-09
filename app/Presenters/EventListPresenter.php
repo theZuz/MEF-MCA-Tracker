@@ -51,7 +51,7 @@ final class EventListPresenter extends Presenter
 			->setFilterText();
 		$grid->addColumnDateTime('date', 'Date')
 			->setFilterText();
-		$grid->addColumnNumber('price', 'Price')
+		$grid->addColumnNumber('price', 'Price $')
 			->setFilterText();
 		$grid->addAction('edit', 'Edit', 'EventEdit:');
 		$grid->addAction('remove', 'Remove', 'EventRemove:')

@@ -41,6 +41,8 @@ final class EventEditPresenter extends Presenter
 			$this->redirect('SignIn:');
 		} elseif (!$this->event = $this->entityManager->getRepository(Event::class)->find($id)) {
 			$this->error();
+		} elseif ($this->event->getManager()->getId() !== $this->getUser()->getId()) {
+			$this->error();
 		}
 	}
 
@@ -54,7 +56,7 @@ final class EventEditPresenter extends Presenter
 		$form->addDatePicker('date', 'Date')
 			->setDefaultValue($this->event->getDate())
 			->setRequired();
-		$form->addText('price', 'Price')
+		$form->addText('price', 'Price $')
 			->setType('number')
 			->setDefaultValue($this->event->getPrice())
 			->setRequired();

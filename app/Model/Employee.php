@@ -49,12 +49,6 @@ class Employee
 	 */
 	private $startDate;
 
-	/**
-	 * @ ORM\Column(type="float")
-	 * @var float
-	 */
-	private $yearBudget = 50.0;
-
 	public function __construct(
 		Department $department,
 		string $cnum,
@@ -77,9 +71,19 @@ class Employee
 		return $this->department;
 	}
 
+	public function setDepartment(Department $department): void
+	{
+		$this->department = $department;
+	}
+
 	public function getCnum(): string
 	{
 		return $this->cnum;
+	}
+
+	public function setCnum(string $cnum): void
+	{
+		$this->cnum = $cnum;
 	}
 
 	public function getName(): string
@@ -87,9 +91,19 @@ class Employee
 		return $this->name;
 	}
 
+	public function setName(string $name): void
+	{
+		$this->name = $name;
+	}
+
 	public function getCountry(): string
 	{
 		return $this->country;
+	}
+
+	public function setCountry(string $country): void
+	{
+		$this->country = $country;
 	}
 
 	public function getStartDate(): ?\DateTimeInterface

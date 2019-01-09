@@ -48,7 +48,7 @@ final class EventCreatePresenter extends Presenter
 		$form->addDatePicker('date', 'Date')
 			->setDefaultValue(new \DateTime)
 			->setRequired();
-		$form->addText('price', 'Price')
+		$form->addText('price', 'Price $')
 			->setType('number')
 			->setRequired();
 
